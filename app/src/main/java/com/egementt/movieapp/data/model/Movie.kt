@@ -9,10 +9,14 @@ data class Movie(
     val original_title: String,
     val overview: String,
     val popularity: Double,
-    val poster_path: String,
+    var poster_path: String,
     val release_date: String,
     val title: String,
     val video: Boolean,
     val vote_average: Double,
     val vote_count: Int
-)
+){
+    fun getFullImageURL(): String {
+        return "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/$poster_path"
+    }
+}

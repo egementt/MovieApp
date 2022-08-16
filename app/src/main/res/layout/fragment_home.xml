@@ -4,30 +4,75 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="4dp"
     tools:context=".presentation.home.HomeFragment">
 
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rw_popularMovies"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:clipToPadding="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tw_popular" />
+
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/pb_popular_movies"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/rw_popularMovies"
+        app:layout_constraintEnd_toEndOf="@+id/rw_popularMovies"
+        app:layout_constraintStart_toStartOf="@+id/rw_popularMovies"
+        app:layout_constraintTop_toTopOf="@+id/rw_popularMovies" />
+
+    <TextView
+        android:id="@+id/tw_popular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/popular_movies"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/rw_popularMovies"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/rw_popularMovies"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tw_upcoming"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/upcoming_movies"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.014"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar"
-        app:layout_constraintVertical_bias="0.164" />
+        app:layout_constraintTop_toBottomOf="@+id/rw_popularMovies" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rw_upcomingMovies"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clipToPadding="true"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tw_upcoming" />
+
+    <ProgressBar
+        android:id="@+id/pb_upcomingMovies"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/rw_upcomingMovies"
+        app:layout_constraintEnd_toEndOf="@+id/rw_upcomingMovies"
+        app:layout_constraintStart_toStartOf="@+id/rw_upcomingMovies"
+        app:layout_constraintTop_toTopOf="@+id/rw_upcomingMovies" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

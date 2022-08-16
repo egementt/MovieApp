@@ -15,4 +15,11 @@ interface MovieApiService {
         @Query("language") language: String = "en-US",
         @Query("page") page: Int? = 1,
     ): MovieResponse
+
+    @GET("movie/upcoming")
+    suspend fun getUpcomingMovies(
+        @Query("api_key") apiKey: String = "6c32b71ebd7e8cd9f8bc99bd77718306",
+        @Query("language") language: String = "en-US",
+        @Query("page") page: Int? = 1,
+    ): MovieResponse
 }

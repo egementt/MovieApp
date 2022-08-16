@@ -10,4 +10,6 @@ import javax.inject.Inject
 class MovieRepository @Inject constructor(private val apiService: MovieApiService) {
 
     suspend fun getPopularMovies(): MovieResponse = apiService.getPopularMovies()
+
+    suspend fun getUpcomingMovies(): MovieResponse = apiService.getUpcomingMovies()
 }
