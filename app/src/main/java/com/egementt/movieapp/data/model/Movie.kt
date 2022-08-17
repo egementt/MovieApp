@@ -16,7 +16,18 @@ data class Movie(
     val vote_average: Double,
     val vote_count: Int
 ){
-    fun getFullImageURL(): String {
-        return "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/$poster_path"
+    fun getFullImageURL( path: String = poster_path , resolution: Resolution): String {
+
+        return when(resolution){
+            Resolution.HIGH -> "https://www.themoviedb.org/t/p/w1066_and_h600_bestv2/$poster_path"
+            Resolution.MEDIUM -> "https://www.themoviedb.org/t/p/w553_and_h300_bestv2$poster_path"
+            Resolution.LOW -> "https://www.themoviedb.org/t/p/w300_and_h450_bestv2$poster_path"
+        }
     }
+
+    enum class Resolution{
+        LOW, MEDIUM, HIGH
+    }
+
+
 }

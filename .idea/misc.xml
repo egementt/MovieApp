@@ -4,7 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/AndroidCodelabs/MovieApp/app/src/main/res/layout/activity_main.xml" value="0.19166666666666668" />
-        <entry key="..\:/AndroidCodelabs/MovieApp/app/src/main/res/layout/fragment_detail.xml" value="0.19010416666666666" />
+        <entry key="..\:/AndroidCodelabs/MovieApp/app/src/main/res/layout/fragment_detail.xml" value="0.5" />
         <entry key="..\:/AndroidCodelabs/MovieApp/app/src/main/res/layout/fragment_home.xml" value="0.26510416666666664" />
         <entry key="..\:/AndroidCodelabs/MovieApp/app/src/main/res/layout/fragment_splash_screen.xml" value="0.371875" />
         <entry key="..\:/AndroidCodelabs/MovieApp/app/src/main/res/layout/rw_movie_item.xml" value="0.37083333333333335" />

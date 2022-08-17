@@ -18,6 +18,7 @@ import com.egementt.movieapp.adapter.PopularMoviesRWAdapter
 import com.egementt.movieapp.databinding.FragmentHomeBinding
 import com.egementt.movieapp.presentation.HomeViewModel
 import com.egementt.movieapp.presentation.MovieResponseState
+import com.egementt.movieapp.presentation.SharedViewModel
 import com.egementt.movieapp.util.MarginItemDecoration
 import com.egementt.movieapp.util.ext.invisible
 import com.egementt.movieapp.util.ext.visible
@@ -30,6 +31,7 @@ import kotlinx.coroutines.launch
 class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
+
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -77,6 +79,9 @@ class HomeFragment : Fragment() {
                         )
 
                         adapter = PopularMoviesRWAdapter(movieResponseState.movieResponse.results, onClick = { movie ->
+                            if (movie != null) {
+                                SharedViewModel.updateItem(movie)
+                            }
                             findNavController().navigate(R.id.detailFragment)
                         })
                         addItemDecoration(MarginItemDecoration(12))
@@ -110,6 +115,9 @@ class HomeFragment : Fragment() {
                             findNavController().navigate(R.id.detailFragment)
                         }
                         adapter = PopularMoviesRWAdapter(movieResponseState.movieResponse.results, onClick = { movie ->
+                            if (movie != null) {
+                                SharedViewModel.updateItem(movie)
+                            }
                             findNavController().navigate(R.id.detailFragment)
                         })
                         addItemDecoration(MarginItemDecoration(12))
