@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:isScrollContainer="true"
-    app:layout_scrollEffect="compress"
     tools:context=".presentation.detail.DetailFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fragmentDetail_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
 
     <ImageView
         android:id="@+id/iw_poster_detail"
@@ -34,6 +39,7 @@
             android:id="@+id/tw_movie_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:fontFamily="sans-serif-black"
             android:gravity="center"
             android:text="TextView"
@@ -60,7 +66,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="68dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:backgroundTint="#D32F2F"
             android:text="Watch"
             app:layout_constraintEnd_toStartOf="@+id/imageButton"
@@ -85,6 +91,7 @@
         android:id="@+id/rw_cast"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tw_cast"
         app:layout_constraintTop_toBottomOf="@+id/tw_cast" />
@@ -101,11 +108,18 @@
         app:layout_constraintTop_toBottomOf="@+id/rw_cast" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rw_recommended_movies"
         android:layout_width="409dp"
         android:layout_height="169dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tw_related_movies" />
+        app:layout_constraintTop_toBottomOf="@+id/tw_related_movies"
+        app:layout_constraintVertical_bias="0.0" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>

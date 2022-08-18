@@ -28,4 +28,10 @@ interface MovieApiService {
         @Path("movie_id") movieId: String,
         @Query("api_key") apiKey: String = API_KEY
     ): CreditsModel
+
+    @GET("movie/{movie_id}/recommendations")
+    suspend fun getRecommendedMovies(
+        @Path("movie_id") movieId: String,
+        @Query("api_key") apiKey: String = API_KEY
+    ):MovieResponse
 }

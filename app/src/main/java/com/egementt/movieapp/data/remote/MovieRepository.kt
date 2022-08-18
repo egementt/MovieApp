@@ -11,4 +11,6 @@ class MovieRepository @Inject constructor(private val apiService: MovieApiServic
     suspend fun getUpcomingMovies(): MovieResponse = apiService.getUpcomingMovies()
 
     suspend fun getMovieCredits(movieId: String): CreditsModel = apiService.getMovieCredits(movieId)
+
+    suspend fun getRecommendedMovies(movieId: String): MovieResponse = apiService.getRecommendedMovies(movieId)
 }
