@@ -3,40 +3,42 @@ package com.egementt.movieapp.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.egementt.movieapp.R
+import com.egementt.movieapp.data.model.Cast
 import com.egementt.movieapp.data.model.Movie
 import com.google.android.material.imageview.ShapeableImageView
 
-class PopularMoviesRWAdapter(private val list: List<Movie>, private val onClick: (Movie?) -> Unit) : RecyclerView.Adapter<PopularMoviesRWAdapter.CustomViewHolder>() {
+class CastRWAdapater(private val list: List<Cast>) : RecyclerView.Adapter<CastRWAdapater.CustomViewHolder>() {
 
 
 
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 
-        val moviePoster = itemView.findViewById<ShapeableImageView>(R.id.imageView)!!
+        private val personName = itemView.findViewById<TextView>(R.id.tv_person_name)!!
+        private val personImg = itemView.findViewById<ImageView>(R.id.iv_person)
 
 
-        fun bindItems(movie: Movie, onClick: (Movie?) -> Unit){
-            Glide.with(itemView).load(movie.poster_path).centerInside().into(moviePoster)
-            itemView.setOnClickListener {
-                onClick(movie)
-            }
+        fun bindItems(cast: Cast){
+            Glide.with(itemView).load(cast.profile_path).centerInside().into(personImg)
+            personName.text = cast.name
         }
 
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.rw_movie_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.rw_cast_item, parent, false)
         return CustomViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         val currentMovie = list[position]
-        holder.bindItems(currentMovie, onClick)
+        holder.bindItems(currentMovie)
     }
 
     override fun getItemCount(): Int {

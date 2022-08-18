@@ -16,7 +16,7 @@ data class Movie(
     val vote_average: Double,
     val vote_count: Int
 ){
-    fun getFullImageURL( path: String = poster_path , resolution: Resolution): String {
+    fun getFullImageURL( path: String = poster_path , resolution: Resolution = Resolution.LOW): String {
 
         return when(resolution){
             Resolution.HIGH -> "https://www.themoviedb.org/t/p/w1066_and_h600_bestv2/$poster_path"
