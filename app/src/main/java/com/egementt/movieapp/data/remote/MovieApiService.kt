@@ -34,4 +34,10 @@ interface MovieApiService {
         @Path("movie_id") movieId: String,
         @Query("api_key") apiKey: String = API_KEY
     ):MovieResponse
+
+    @GET("search/movie")
+    suspend fun searchByText(
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("query") query: String
+    ): MovieResponse
 }

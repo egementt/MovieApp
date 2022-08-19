@@ -13,4 +13,6 @@ class MovieRepository @Inject constructor(private val apiService: MovieApiServic
     suspend fun getMovieCredits(movieId: String): CreditsModel = apiService.getMovieCredits(movieId)
 
     suspend fun getRecommendedMovies(movieId: String): MovieResponse = apiService.getRecommendedMovies(movieId)
+
+    suspend fun searchByText(query: String): MovieResponse = apiService.searchByText(query = query)
 }

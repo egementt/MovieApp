@@ -11,4 +11,11 @@
     <!-- Home Fragment -->
     <string name="popular_movies">Popular Movies</string>
     <string name="upcoming_movies">Upcoming Movies</string>
+
+
+
+
+    <!-- Search Fragment -->
+    <string name="language">Language: %s</string>
+    <string name="vote_text">Vote: %s</string>
 </resources>
