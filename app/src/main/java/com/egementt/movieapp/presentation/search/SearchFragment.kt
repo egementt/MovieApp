@@ -63,7 +63,6 @@ class SearchFragment : Fragment() {
                                     }
                                     findNavController().navigate(R.id.detailFragment)
                                 })
-                                addItemDecoration(MarginItemDecoration(12))
                             }
                         }
                         is SearchState.Error -> {
