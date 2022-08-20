@@ -12,8 +12,8 @@ import com.egementt.movieapp.data.model.Cast
 import com.egementt.movieapp.data.model.Movie
 import com.google.android.material.imageview.ShapeableImageView
 
-class CastRWAdapater(private val list: List<Cast>) : RecyclerView.Adapter<CastRWAdapater.CustomViewHolder>() {
-
+class CastRWAdapater(private val list: List<Cast>) :
+    RecyclerView.Adapter<CastRWAdapater.CustomViewHolder>() {
 
 
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -23,8 +23,9 @@ class CastRWAdapater(private val list: List<Cast>) : RecyclerView.Adapter<CastRW
         private val personImg = itemView.findViewById<ImageView>(R.id.iv_person)
 
 
-        fun bindItems(cast: Cast){
-            Glide.with(itemView).load(cast.profile_path).centerInside().into(personImg)
+        fun bindItems(cast: Cast) {
+            Glide.with(itemView).load(cast.profile_path).placeholder(R.drawable.null_photo)
+                .centerInside().into(personImg)
             personName.text = cast.name
         }
 

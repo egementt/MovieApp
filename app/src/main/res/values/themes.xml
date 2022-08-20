@@ -19,4 +19,9 @@
         <item name="cornerSize">12dp</item>
         <item name="android:scaleType">fitCenter</item>
     </style>
+
+    <style name="bottomNavStyle" parent="Widget.MaterialComponents.BottomNavigationView.PrimarySurface">
+        <item name="color">@color/bottomNavColor</item>
+        <item name="borderRound">12dp</item>
+    </style>
 </resources>

@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.splashScreen, R.id.detailFragment -> {
+                R.id.splashScreen, R.id.detailFragment, R.id.videoPlayerFragment-> {
                     this.supportActionBar?.hide()
                     binding.bottomNavigation.gone()
                 }

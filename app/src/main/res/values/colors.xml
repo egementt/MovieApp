@@ -20,4 +20,6 @@
 
     <color name="secondaryTextColor">#000000</color>
 
+    <color name="bottomNavColor">#9E9E9E</color>
+
 </resources>

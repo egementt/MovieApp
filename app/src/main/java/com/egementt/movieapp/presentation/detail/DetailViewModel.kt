@@ -2,27 +2,40 @@ package com.egementt.movieapp.presentation.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.egementt.movieapp.data.local.MovieLocalRepository
 import com.egementt.movieapp.data.model.Cast
+import com.egementt.movieapp.data.model.Genres
 import com.egementt.movieapp.data.model.Movie
 import com.egementt.movieapp.data.model.MovieResponse
 import com.egementt.movieapp.data.remote.MovieRepository
+import com.egementt.movieapp.data.typeconverter.GenresTypeConverter
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailViewModel @Inject constructor(private val repository: MovieRepository) : ViewModel() {
+class DetailViewModel @Inject constructor(
+    private val repository: MovieRepository,
+    private val localRepository: MovieLocalRepository
+) : ViewModel() {
 
     private val _castState: MutableStateFlow<CastResponseState> = MutableStateFlow(
         CastResponseState.Loading
     )
     val castState get() = _castState
 
-    private val _recommendedMoviesState: MutableStateFlow<RecommendedMovieResponseState> = MutableStateFlow(
-        RecommendedMovieResponseState.Loading
-    )
+    private val _recommendedMoviesState: MutableStateFlow<RecommendedMovieResponseState> =
+        MutableStateFlow(
+            RecommendedMovieResponseState.Loading
+        )
     val recommendedMovieResponseState get() = _recommendedMoviesState
+
+    private val _bookmarkMovieState: MutableStateFlow<BookmarkMovieState> = MutableStateFlow(
+        BookmarkMovieState.Unmarked
+    )
+    val bookmarkMovieState get() = _bookmarkMovieState
 
 
     fun getCast(movieId: String) {
@@ -43,9 +56,9 @@ class DetailViewModel @Inject constructor(private val repository: MovieRepositor
 
     }
 
-    fun getRecommendedMovies(movieId: String){
+    fun getRecommendedMovies(movieId: String) {
         viewModelScope.launch {
-            _recommendedMoviesState.collect{
+            _recommendedMoviesState.collect {
                 try {
                     val res = repository.getRecommendedMovies(movieId).results.apply {
                         map {
@@ -53,11 +66,34 @@ class DetailViewModel @Inject constructor(private val repository: MovieRepositor
                         }
                     }
                     _recommendedMoviesState.value = RecommendedMovieResponseState.Success(res)
-                }catch (e: Exception){
-                    _recommendedMoviesState.value = RecommendedMovieResponseState.Error(e.message ?: "An error occurred")
+                } catch (e: Exception) {
+                    _recommendedMoviesState.value =
+                        RecommendedMovieResponseState.Error(e.message ?: "An error occurred")
                 }
             }
         }
+    }
+
+
+    fun bookmarkMovie(movie: Movie) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _bookmarkMovieState.collect {
+                try {
+                    localRepository.addMovie(movie)
+                    _bookmarkMovieState.value = BookmarkMovieState.Success(movie)
+                } catch (
+                    e: Exception
+                ){
+                    _bookmarkMovieState.value = BookmarkMovieState.Error(e.message.toString())
+                }
+            }
+        }
+    }
+
+    sealed class BookmarkMovieState {
+        object Unmarked : BookmarkMovieState()
+        data class Success(val movie: Movie) : BookmarkMovieState()
+        data class Error(val error: String) : BookmarkMovieState()
     }
 
     sealed class RecommendedMovieResponseState {

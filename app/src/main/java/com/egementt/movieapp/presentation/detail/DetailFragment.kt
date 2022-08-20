@@ -1,5 +1,7 @@
 package com.egementt.movieapp.presentation.detail
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -21,6 +23,9 @@ import com.egementt.movieapp.databinding.FragmentDetailBinding
 import com.egementt.movieapp.presentation.SharedViewModel
 import com.egementt.movieapp.util.MarginItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DetailFragment : Fragment() {
@@ -49,11 +54,22 @@ class DetailFragment : Fragment() {
            Glide.with(this).load(it.getFullImageURL(it.backdrop_path, Movie.Resolution.HIGH)).centerCrop().into(binding.iwPosterDetail)
         })
 
+        binding.btnWatch.setOnClickListener {
+            findNavController().navigate(R.id.action_detailFragment_to_videoPlayerFragment)
+        }
+
         lifecycleScope.launchWhenStarted {
             observeCasts()
         }
         lifecycleScope.launchWhenStarted {
             observeRecommendedMovies()
+        }
+
+
+        binding.btnBookmark.setOnClickListener {
+            lifecycleScope.launchWhenStarted {
+                observeBookmarks(movieItem.value!!)
+            }
         }
 
         return binding.root
@@ -114,6 +130,23 @@ class DetailFragment : Fragment() {
                 }
             }
 
+        }
+    }
+
+    private suspend fun observeBookmarks(movie: Movie){
+        viewModel.bookmarkMovie(movieItem.value!!)
+        viewModel.bookmarkMovieState.collectLatest {  state->
+            when(state){
+                is DetailViewModel.BookmarkMovieState.Unmarked -> {
+
+                }
+                is DetailViewModel.BookmarkMovieState.Success -> {
+                    binding.btnBookmark.imageTintList = ColorStateList.valueOf(Color.RED)
+                }
+                is DetailViewModel.BookmarkMovieState.Error -> {
+                Log.d("DetailFragment", state.error.toString())
+                }
+            }
         }
     }
 

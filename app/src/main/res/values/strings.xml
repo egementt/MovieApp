@@ -13,9 +13,10 @@
     <string name="upcoming_movies">Upcoming Movies</string>
 
 
-
-
     <!-- Search Fragment -->
     <string name="language">Language: %s</string>
     <string name="vote_text">Vote: %s</string>
+
+
+    <string name="sample_uri">https://storage.googleapis.com/exoplayer-test-media-0/play.mp3</string>
 </resources>
