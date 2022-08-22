@@ -17,6 +17,7 @@ import com.egementt.movieapp.adapter.PopularMoviesRWAdapter
 import com.egementt.movieapp.adapter.SearchMoviesRWAdapter
 import com.egementt.movieapp.databinding.FragmentSearchBinding
 import com.egementt.movieapp.presentation.SharedViewModel
+import com.egementt.movieapp.presentation.state.MovieResponseState
 import com.egementt.movieapp.util.MarginItemDecoration
 import com.egementt.movieapp.util.ext.invisible
 import com.egementt.movieapp.util.ext.visible
@@ -50,14 +51,14 @@ class SearchFragment : Fragment() {
                 )
                 searchViewModel.searchState.observe(viewLifecycleOwner, Observer { state ->
                     when (state) {
-                        SearchState.Loading -> {
+                        MovieResponseState.Loading -> {
                             binding.progressBar.visible()
                         }
-                        is SearchState.Success -> {
+                        is MovieResponseState.Success -> {
                             binding.progressBar.invisible()
                             binding.rwSearch.apply {
 
-                                adapter = SearchMoviesRWAdapter(state.movies, onClick = { movie ->
+                                adapter = SearchMoviesRWAdapter(state.movieResponse.results, onClick = { movie ->
                                     if (movie != null) {
                                         SharedViewModel.updateItem(movie)
                                     }
@@ -65,7 +66,7 @@ class SearchFragment : Fragment() {
                                 })
                             }
                         }
-                        is SearchState.Error -> {
+                        is MovieResponseState.Error -> {
                             binding.progressBar.invisible()
 
                         }

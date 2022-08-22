@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.egementt.movieapp.data.model.MovieResponse
 import com.egementt.movieapp.data.remote.MovieRepository
+import com.egementt.movieapp.presentation.state.MovieResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -74,8 +75,3 @@ class HomeViewModel @Inject constructor(private val repository: MovieRepository 
 
 
 
-sealed class MovieResponseState {
-    data class Success(val movieResponse: MovieResponse): MovieResponseState()
-    data class Error(val string: String): MovieResponseState()
-    object Loading : MovieResponseState()
-}

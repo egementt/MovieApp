@@ -14,6 +14,7 @@ import com.egementt.movieapp.adapter.CastRWAdapater
 import com.egementt.movieapp.adapter.PopularMoviesRWAdapter
 import com.egementt.movieapp.databinding.FragmentHomeBinding
 import com.egementt.movieapp.presentation.SharedViewModel
+import com.egementt.movieapp.presentation.state.MovieResponseState
 import com.egementt.movieapp.util.MarginItemDecoration
 import com.egementt.movieapp.util.ext.invisible
 import com.egementt.movieapp.util.ext.visible

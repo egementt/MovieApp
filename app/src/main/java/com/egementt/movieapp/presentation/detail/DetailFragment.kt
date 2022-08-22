@@ -21,6 +21,9 @@ import com.egementt.movieapp.adapter.PopularMoviesRWAdapter
 import com.egementt.movieapp.data.model.Movie
 import com.egementt.movieapp.databinding.FragmentDetailBinding
 import com.egementt.movieapp.presentation.SharedViewModel
+import com.egementt.movieapp.presentation.state.BookmarkMovieState
+import com.egementt.movieapp.presentation.state.CastState
+import com.egementt.movieapp.presentation.state.MovieResponseState
 import com.egementt.movieapp.util.MarginItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -68,7 +71,7 @@ class DetailFragment : Fragment() {
 
         binding.btnBookmark.setOnClickListener {
             lifecycleScope.launchWhenStarted {
-                observeBookmarks(movieItem.value!!)
+                observeBookmarks()
             }
         }
 
@@ -78,9 +81,9 @@ class DetailFragment : Fragment() {
     private suspend fun observeCasts(){
         viewModel.castState.collect { castState ->
             when (castState) {
-                DetailViewModel.CastResponseState.Loading -> {
+                CastState.Loading -> {
                 }
-                is DetailViewModel.CastResponseState.Success -> {
+                is CastState.Success -> {
 
                     binding.rwCast.apply {
                         layoutManager = LinearLayoutManager(
@@ -93,7 +96,7 @@ class DetailFragment : Fragment() {
                         addItemDecoration(MarginItemDecoration(12))
                     }
                 }
-                is DetailViewModel.CastResponseState.Error -> {
+                is CastState.Error -> {
 
 
                 }
@@ -105,17 +108,17 @@ class DetailFragment : Fragment() {
     private suspend fun observeRecommendedMovies(){
         viewModel.recommendedMovieResponseState.collect{ responseState ->
             when(responseState){
-                DetailViewModel.RecommendedMovieResponseState.Loading -> {
+                MovieResponseState.Loading -> {
 
                 }
-                is DetailViewModel.RecommendedMovieResponseState.Success -> {
+                is MovieResponseState.Success -> {
                     binding.rwRecommendedMovies.apply {
                         layoutManager = LinearLayoutManager(
                             requireContext(),
                             LinearLayoutManager.HORIZONTAL,
                             false
                         )
-                        adapter = PopularMoviesRWAdapter(responseState.movies, onClick = { movie ->
+                        adapter = PopularMoviesRWAdapter(responseState.movieResponse.results, onClick = { movie ->
                             if (movie != null) {
                                 SharedViewModel.updateItem(movie)
                             }
@@ -124,7 +127,7 @@ class DetailFragment : Fragment() {
                         addItemDecoration(MarginItemDecoration(12))
                     }
                 }
-                is DetailViewModel.RecommendedMovieResponseState.Error -> {
+                is MovieResponseState.Error -> {
                     Toast.makeText(requireContext(), responseState.error, Toast.LENGTH_LONG).show()
                     Log.e("DetailFragment", responseState.error)
                 }
@@ -133,18 +136,18 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private suspend fun observeBookmarks(movie: Movie){
+    private suspend fun observeBookmarks(){
         viewModel.bookmarkMovie(movieItem.value!!)
         viewModel.bookmarkMovieState.collectLatest {  state->
             when(state){
-                is DetailViewModel.BookmarkMovieState.Unmarked -> {
-
+                is BookmarkMovieState.Unmarked -> {
+                    binding.btnBookmark.imageTintList = ColorStateList.valueOf(Color.GRAY)
                 }
-                is DetailViewModel.BookmarkMovieState.Success -> {
+                is BookmarkMovieState.Success -> {
                     binding.btnBookmark.imageTintList = ColorStateList.valueOf(Color.RED)
                 }
-                is DetailViewModel.BookmarkMovieState.Error -> {
-                Log.d("DetailFragment", state.error.toString())
+                is BookmarkMovieState.Error -> {
+                Log.d("DetailFragment", state.error)
                 }
             }
         }

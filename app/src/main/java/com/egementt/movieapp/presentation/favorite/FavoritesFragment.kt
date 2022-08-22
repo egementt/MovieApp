@@ -15,6 +15,8 @@ import com.egementt.movieapp.adapter.PopularMoviesRWAdapter
 import com.egementt.movieapp.adapter.SearchMoviesRWAdapter
 import com.egementt.movieapp.databinding.FragmentFavoritesBinding
 import com.egementt.movieapp.presentation.SharedViewModel
+import com.egementt.movieapp.presentation.state.BookmarkMovieState
+import com.egementt.movieapp.presentation.state.MovieListState
 import com.egementt.movieapp.util.MarginItemDecoration
 import com.egementt.movieapp.util.ext.invisible
 import com.egementt.movieapp.util.ext.visible
@@ -38,12 +40,12 @@ class FavoritesFragment : Fragment() {
 
         lifecycleScope.launchWhenStarted {
             viewModel.getFavoriteMovies()
-            viewModel.savedMovieState.collect{ state ->
+            viewModel.favoriteState.collect{ state ->
                 when(state){
-                    is FavoriteMovieState.Loading -> {
+                    is MovieListState.Loading -> {
                         binding.progressBar.visible()
                     }
-                    is FavoriteMovieState.Success -> {
+                    is MovieListState.Success -> {
                         binding.progressBar.invisible()
                         binding.rwFavoriteMovies.apply {
                             layoutManager = LinearLayoutManager(
@@ -60,7 +62,7 @@ class FavoritesFragment : Fragment() {
                             addItemDecoration(MarginItemDecoration(12))
                         }
                     }
-                    is FavoriteMovieState.Error -> {
+                    is MovieListState.Error -> {
                         binding.progressBar.invisible()
                         Log.d("FavoritesFragment", state.error)
                     }

@@ -2,13 +2,12 @@ package com.egementt.movieapp.presentation.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.egementt.movieapp.data.local.MovieLocalRepository
-import com.egementt.movieapp.data.model.Cast
-import com.egementt.movieapp.data.model.Genres
+import com.egementt.movieapp.data.local.LocalRepository
 import com.egementt.movieapp.data.model.Movie
-import com.egementt.movieapp.data.model.MovieResponse
 import com.egementt.movieapp.data.remote.MovieRepository
-import com.egementt.movieapp.data.typeconverter.GenresTypeConverter
+import com.egementt.movieapp.presentation.state.BookmarkMovieState
+import com.egementt.movieapp.presentation.state.CastState
+import com.egementt.movieapp.presentation.state.MovieResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -18,17 +17,17 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val repository: MovieRepository,
-    private val localRepository: MovieLocalRepository
+    private val localRepository: LocalRepository
 ) : ViewModel() {
 
-    private val _castState: MutableStateFlow<CastResponseState> = MutableStateFlow(
-        CastResponseState.Loading
+    private val _castState: MutableStateFlow<CastState> = MutableStateFlow(
+        CastState.Loading
     )
     val castState get() = _castState
 
-    private val _recommendedMoviesState: MutableStateFlow<RecommendedMovieResponseState> =
+    private val _recommendedMoviesState: MutableStateFlow<MovieResponseState> =
         MutableStateFlow(
-            RecommendedMovieResponseState.Loading
+            MovieResponseState.Loading
         )
     val recommendedMovieResponseState get() = _recommendedMoviesState
 
@@ -47,9 +46,9 @@ class DetailViewModel @Inject constructor(
                             it.profile_path = it.createFullImageUrl()
                         }
                     }
-                    _castState.value = CastResponseState.Success(res)
+                    _castState.value = CastState.Success(res)
                 } catch (e: Exception) {
-                    _castState.value = CastResponseState.Error(e.message ?: "An error occurred")
+                    _castState.value = CastState.Error(e.message ?: "An error occurred")
                 }
             }
         }
@@ -60,15 +59,15 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             _recommendedMoviesState.collect {
                 try {
-                    val res = repository.getRecommendedMovies(movieId).results.apply {
-                        map {
+                    val res = repository.getRecommendedMovies(movieId).apply {
+                        results.map {
                             it.poster_path = it.getFullImageURL(it.poster_path)
                         }
                     }
-                    _recommendedMoviesState.value = RecommendedMovieResponseState.Success(res)
+                    _recommendedMoviesState.value = MovieResponseState.Success(res)
                 } catch (e: Exception) {
                     _recommendedMoviesState.value =
-                        RecommendedMovieResponseState.Error(e.message ?: "An error occurred")
+                        MovieResponseState.Error(e.message ?: "An error occurred")
                 }
             }
         }
@@ -79,8 +78,8 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _bookmarkMovieState.collect {
                 try {
-                    localRepository.addMovie(movie)
-                    _bookmarkMovieState.value = BookmarkMovieState.Success(movie)
+                    localRepository.insertMovie(movie)
+                    _bookmarkMovieState.value = BookmarkMovieState.Success
                 } catch (
                     e: Exception
                 ){
@@ -90,21 +89,9 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    sealed class BookmarkMovieState {
-        object Unmarked : BookmarkMovieState()
-        data class Success(val movie: Movie) : BookmarkMovieState()
-        data class Error(val error: String) : BookmarkMovieState()
-    }
 
-    sealed class RecommendedMovieResponseState {
-        data class Success(val movies: List<Movie>) : RecommendedMovieResponseState()
-        data class Error(val error: String) : RecommendedMovieResponseState()
-        object Loading : RecommendedMovieResponseState()
-    }
 
-    sealed class CastResponseState {
-        data class Success(val casts: List<Cast>) : CastResponseState()
-        data class Error(val string: String) : CastResponseState()
-        object Loading : CastResponseState()
-    }
+
+
+
 }
